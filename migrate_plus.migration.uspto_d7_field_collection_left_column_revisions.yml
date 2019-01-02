@@ -1,0 +1,28 @@
+id: uspto_d7_field_collection_left_column_revisions
+label: D7 Field Collection - Left Column Revisions
+migration_tags:
+  - Drupal 7
+  - Field Collection Revisions Content
+migration_group: uspto_migrate
+deriver: Drupal\paragraphs\Plugin\migrate\D7FieldCollectionItemDeriver
+source:
+  plugin: d7_field_collection_item_revision
+process:
+  id:
+    -
+      plugin: paragraphs_lookup
+      tags:
+        - Field Collection Content
+      source: item_id
+    -
+      plugin: extract
+      index:
+        -
+          0
+  type: bundle
+destination:
+  plugin: entity_reference_revisions:paragraph
+  new_revisions: TRUE
+migration_dependencies:
+  required:
+    - uspto_d7_field_collection_left_column

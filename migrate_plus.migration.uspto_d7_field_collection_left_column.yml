@@ -1,0 +1,92 @@
+id: uspto_d7_field_collection_left_column
+label: D7 Field Collection - Left Column
+migration_tags:
+  - Drupal 7
+  - 'Field Collection Content'
+migration_group: uspto_migrate
+deriver: Drupal\paragraphs\Plugin\migrate\D7FieldCollectionItemDeriver
+source:
+  plugin: d7_field_collection_item
+  field_name: field_left_column
+process:
+  id:
+    plugin: get
+    source: item_id
+  revision_id:
+    plugin: get
+    source: revision_id
+  field_block_heading:
+    plugin: sub_process
+    source: field_block_heading
+    process:
+      target_id: tid
+#      target_id:
+#        plugin: skip_on_value #Skip on Event Summary
+#        equals: true
+#        method: row
+#        source: tid
+#        value:
+#          - 530
+  field_block_reference:
+    plugin: sub_process
+    source: field_block_reference
+    process:
+      plugin_id:
+        plugin: static_map
+        bypass: true
+        source: bid
+        map:
+          '319': 'views_block:events_upcoming-topics' #'Events Upcoming (Topics)'
+          '135': 'views_block:events_upcoming-events_upcoming' #'Events Upcoming'
+          '462': 'views_block:events_upcoming-location' #'Events Upcoming (Location)'
+          '132': 'views_block:events_upcoming-topics' #'Topics'
+          '457': 'block_content:87f26463-3395-4f5f-a171-9fff1a80b2a2'
+          '327': 'block_content:7333203f-5176-4e10-a402-2695d7ffa7de'
+
+  field_content_reference:
+    plugin: sub_process
+    source: field_block_list
+    process:
+      target_id: target_id
+#  field_body:
+#    plugin: get
+#    source: field_block_html
+  field_body:
+    plugin: sub_process
+    source: field_block_html
+    process:
+      summary: summary
+      value: value
+      revision_id: revision_id
+      format:
+        -
+          plugin: default_value
+          default_value: full_html
+        -
+          plugin: static_map
+          source: format # body/0/format
+          map:
+            full_html: full_html
+            full_page_raw_html: full_html
+            body_full_html: full_html
+            block_full_html: basic_html
+            block_partial_html: basic_html
+            filtered_html: basic_html
+            plain_text: plain_text
+            raw_html: raw_html
+  field_display_blank:
+    plugin: get
+    source: field_block_display_blank
+destination:
+  plugin: entity_reference_revisions:paragraph
+  default_bundle: aside
+migration_dependencies:
+  required:
+    - uspto_d7_user
+  optional: {  }
+dependencies:
+  enforced:
+    module:
+      - migrate_drupal
+      - migrate_tools
+      - paragraphs
