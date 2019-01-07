@@ -9,12 +9,22 @@ source:
   plugin: d7_field_collection_item
   field_name: field_left_column
 process:
-  id:
-    plugin: get
-    source: item_id
-  revision_id:
-    plugin: get
-    source: revision_id
+  type:
+    plugin: default_value
+    default_value: aside
+  langcode:
+    plugin: default_value
+    default_value: en
+  default_langcode:
+    plugin: default_value
+    default_value: 1
+#  revision_id: revision_id
+#  id:
+#    plugin: get
+#    source: item_id
+#  revision_id:
+#    plugin: get
+#    source: revision_id
   field_block_heading:
     plugin: sub_process
     source: field_block_heading
@@ -40,24 +50,24 @@ process:
           '135': 'views_block:events_upcoming-events_upcoming' #'Events Upcoming'
           '462': 'views_block:events_upcoming-location' #'Events Upcoming (Location)'
           '132': 'views_block:events_upcoming-topics' #'Topics'
-          '457': 'block_content:87f26463-3395-4f5f-a171-9fff1a80b2a2'
-          '327': 'block_content:7333203f-5176-4e10-a402-2695d7ffa7de'
-
+          '457': 'block_content:87f26463-3395-4f5f-a171-9fff1a80b2a2' #'USAjobs - Latest'
+          '327': 'block_content:7333203f-5176-4e10-a402-2695d7ffa7de' #'USPTO Locations'
+#          '138': 'Image'
+#          '132': 'Topics'
+#  field_content_reference:
+#    plugin: get
+#    source: field_block_list
   field_content_reference:
     plugin: sub_process
     source: field_block_list
     process:
       target_id: target_id
-#  field_body:
-#    plugin: get
-#    source: field_block_html
   field_body:
-    plugin: sub_process
+    plugin: get #sub_process
     source: field_block_html
     process:
       summary: summary
       value: value
-      revision_id: revision_id
       format:
         -
           plugin: default_value
@@ -69,7 +79,7 @@ process:
             full_html: full_html
             full_page_raw_html: full_html
             body_full_html: full_html
-            block_full_html: basic_html
+            block_full_html: full_html
             block_partial_html: basic_html
             filtered_html: basic_html
             plain_text: plain_text
@@ -78,8 +88,10 @@ process:
     plugin: get
     source: field_block_display_blank
 destination:
-  plugin: entity_reference_revisions:paragraph
+#  plugin: entity_reference_revisions:paragraph
+  plugin: entity:paragraph
   default_bundle: aside
+  translations: false
 migration_dependencies:
   required:
     - uspto_d7_user

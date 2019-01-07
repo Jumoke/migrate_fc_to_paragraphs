@@ -74,75 +74,22 @@ process:
   field_show_created:
     plugin: get
     source: field_show_created
-  # field_hero_region FC data now field_hero Paragraph
-  field_hero:
-    plugin: sub_process
-    source: field_hero_region
-    process:
-      target_id: value
-      target_revision_id:
-          -
-            plugin: migration_lookup
-            migration: uspto_d7_field_collection_hero_region
-            source: value
-          -
-            plugin: extract
-            index:
-              - 1
-  # field_left_column FC data now field_aside Paragraph
-#  field_aside:
-#    plugin: sub_process
-#    source: field_left_column
-#    process:
-#      target_id: value
-#      target_revision_id:
-#          -
-#            plugin: migration_lookup
-#            migration: uspto_d7_field_collection_left_column
-#            source: value
-#          -
-#            plugin: extract
-#            index:
-#              - 1
+  # Field Collection Migration
   field_aside:
     plugin: sub_process
     source: field_left_column
     process:
-#      target_id: value
-#      target_revision_id: '@target_id'
       target_id:
-        -
-          plugin: migration_lookup
-          migration: uspto_d7_field_collection_left_column
-          source: value
-        -
-          plugin: extract
-          index:
-            - 0
-      target_revision_id:
-        -
-          plugin: migration_lookup
-          migration: uspto_d7_field_collection_left_column
-          source: value
-        -
-          plugin: extract
-          index:
-            - 1
-  # field_external_systems FC now Paragraph
-  field_external_systems:
-    plugin: sub_process
-    source: field_external_systems
-    process:
-      target_id: value
-      target_revision_id:
           -
             plugin: migration_lookup
-            migration: uspto_d7_field_collection_external_systems
+            migration: uspto_d7_field_collection_left_column
             source: value
           -
             plugin: extract
             index:
-              - 1
+              - 0
+      target_revision_id: '@target_id'
+
   field_review_date:
     plugin: get
     source: field_review_date
@@ -240,9 +187,7 @@ migration_dependencies:
   required:
     - uspto_d7_user
     - uspto_d7_node_type
-    - uspto_d7_field_collection_hero_region
     - uspto_d7_field_collection_left_column
-    - uspto_d7_field_collection_external_systems
   optional:
     - uspto_d7_field_instance
     - uspto_d7_comment_field_instance
